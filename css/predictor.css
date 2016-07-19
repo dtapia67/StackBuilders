@@ -1,0 +1,33 @@
+body {
+	margin:0;
+	padding:0;
+	background-color:#ccc;
+}
+
+section p {
+	text-align: center;
+}
+
+#datos {
+	border-style: double;
+	border-color: gray;
+	height: 45%;
+	width: 50%;
+	background-color: #CCF;
+	position: absolute;
+	left: 25%;
+	top: 0%;	
+}
+
+#msg1 {
+	font-size:20px;
+	color: red;
+}
+
+#msg2 {
+	font-size:20px;
+	color: blue;
+}
+
+
+
