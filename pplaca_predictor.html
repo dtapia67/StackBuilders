@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"><title>Pico y Placa Predictor </title> 
+  <link rel="stylesheet" type="text/css" href="css/predictor.css" />
+  
+  <link rel="stylesheet" href="css/jquery-ui.css">
+  <script src="js/jquery.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/picoyplaca.js" ></script>
+
+<script>
+
+  var sdigito, sfecha, nhora, nminuto, f1
+  var hini, hfin, fini, ffin
+
+  $(function() {
+    $( "#datepicker" ).datepicker();
+  });
+
+  function verificar () {
+
+  if (document.getElementById("placa").value.length < 6 ) {alert("Please enter full plate number."); return;}
+  if (document.getElementById("datepicker").value === "" ) {alert("Please enter the date, format mm/dd/yyyy."); return;}
+  if (document.getElementById("hora").value === "" ) {alert("Please enter the time, format hh:mm."); return;}
+  if (!Number(document.getElementById("placa").value.substr(-1))) {alert("The last plate number must be a number."); return;}
+
+  msg1.innerHTML = "";
+  msg2.innerHTML = "";
+
+  sdigito = document.getElementById("placa").value.substr(-1) ;
+  sfecha = document.getElementById("datepicker").value.split("/");
+  nhora = Number(document.getElementById("hora").value.substr(0,2));
+  nminuto = Number(document.getElementById("hora").value.substr(3,2));
+
+  f1 = new Date(sfecha[2], sfecha[0]-1, sfecha[1], nhora, nminuto);
+
+  ndia = f1.getDay();
+
+  console.clear();
+  console.log ("primera unidad de control");
+  console.log (sdigito);
+  console.log (sfecha);
+  console.log (nhora);
+  console.log (nminuto);
+  console.log (f1);
+  console.log (ndia);
+
+  circular = "S";
+  pplaca.forEach(function(elem, i) {
+
+    if (pplaca[i].placa.search(sdigito) !== -1 && pplaca[i].dia === ndia) { 
+
+      hora.forEach(function(elem, i) {
+
+        hini = hora[i].hini.split(":");
+        hfin = hora[i].hfin.split(":");
+        fini = new Date(sfecha[2], sfecha[0]-1, sfecha[1], hini[0], hini[1]);
+        ffin = new Date(sfecha[2], sfecha[0]-1, sfecha[1], hfin[0], hfin[1]);
+
+        console.log ("segunda unidad de control");
+        console.log (hini);
+        console.log (hfin);
+        console.log (fini);
+        console.log (ffin);
+
+        if (f1 >= fini && f1 <= ffin) {circular = "N";}
+
+      });
+
+    }
+  });
+  
+  if (circular === "N") {
+    msg1.innerHTML = "CAR CAN'T BE ON THE ROAD!!!"; }
+  else {
+    msg2.innerHTML = "CAR CAN BE ON THE ROAD."; }
+
+  }
+
+</script>
+</head>
+<body>
+
+<div id="datos" align="center">
+
+  <h2>PICO Y PLACA PREDICTOR</h2>
+  <section>
+    <p>Plate number: <input type="text" id="placa" placeholder="Full number." maxlength="8"></p>
+    <p>Date: <input type="text" id="datepicker" placeholder="mm/dd/yyyy" maxlength="10"></p>
+    <p>Time: <input type="text" id="hora" placeholder="hh:mm" maxlength="5"></p>
+  </section>
+  <button onclick="verificar()" type="button" >Verificar</button>
+
+  <p id="msg1"></p>
+  <p id="msg2"></p>  
+
+</div>
+
+</body>
+</html>
+
